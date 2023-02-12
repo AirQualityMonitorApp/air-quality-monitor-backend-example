@@ -14,7 +14,7 @@ const airQualityModel = require('../schema');
 const updateDatabaseDocument = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.headers.userid;
     if (userId == undefined) {
-        res.status(401).json({ message: "You are not authorized to perform this action" });
+        res.status(403).json({ message: "You are not authorized to perform this action" });
     }
     console.log(userId);
     const data = req.body;
@@ -30,7 +30,7 @@ const updateDatabaseDocument = (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         const doc = yield airQualityModel.findOne({ uid: userId });
         if (doc.callCount >= 100) {
-            res.status(403).json({ message: "Daily calls limit exceeded" });
+            res.status(429).json({ message: "Daily calls limit exceeded" });
         }
         yield doc.updateOne(realTimeData);
         yield doc.updateOne({ $inc: { callCount: 50 } });

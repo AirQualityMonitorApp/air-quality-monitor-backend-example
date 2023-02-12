@@ -7,7 +7,7 @@ export const updateDatabaseDocument = async (req: Request, res: Response) => {
     const userId = req.headers.userid
 
     if (userId == undefined) {
-        res.status(401).json({message: "You are not authorized to perform this action"})
+        res.status(403).json({message: "You are not authorized to perform this action"})
     }
     console.log(userId)
     const data = req.body
@@ -25,7 +25,7 @@ export const updateDatabaseDocument = async (req: Request, res: Response) => {
     try {
         const doc = await airQualityModel.findOne({ uid: userId })
         if (doc.callCount >= 100) {
-            res.status(403).json({message: "Daily calls limit exceeded"})
+            res.status(429).json({message: "Daily calls limit exceeded"})
         }
         await doc.updateOne(realTimeData)
         await doc.updateOne({ $inc: { callCount: 50 } });
@@ -44,5 +44,4 @@ export const updateDatabaseDocument = async (req: Request, res: Response) => {
     } catch (error) {
         res.json({message: error})
     }
-
 }

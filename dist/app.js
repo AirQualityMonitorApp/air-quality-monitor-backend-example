@@ -17,9 +17,10 @@ const getToken_1 = require("./methods/getToken");
 const resetUserPassword_1 = require("./methods/resetUserPassword");
 const sendVerificationEmail_1 = require("./methods/sendVerificationEmail");
 const resetCallCount_1 = require("./methods/resetCallCount");
+const deleteUser_1 = require("./methods/deleteUser");
 const express = require('express');
 const sls = require('serverless-http');
-var cron = require('node-cron');
+const cron = require('node-cron');
 require('dotenv').config();
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
@@ -36,10 +37,7 @@ exports.db.on("error", console.error.bind(console, "connection error: "));
 exports.db.once("open", function () {
     console.log("Connected successfully");
 });
-cron.schedule('0 0 0 * * *', () => {
-    resetCallCount_1.resetCallCount;
-});
-app.post('/resetCallCount', resetCallCount_1.resetCallCount);
+app.put('/resetCallCount', resetCallCount_1.resetCallCount);
 app.get('/', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     res.status(200).send('Server is up and running!');
 }));
@@ -49,6 +47,7 @@ app.post('/user', createUser_1.createUser);
 app.put('/api', updateDatabaseDocument_1.updateDatabaseDocument);
 app.post('/resetPassword', resetUserPassword_1.resetUserPassword);
 app.post('/verifyEmail', sendVerificationEmail_1.sendVerificationEmail);
+app.delete('/deleteUser', getToken_1.requestToken, deleteUser_1.deleteUser);
 let port = process.env.PORT;
 app.listen(port, () => console.log(`App listening on port ${port}!`));
 module.exports.server = sls(app);

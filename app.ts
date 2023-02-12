@@ -6,10 +6,11 @@ import { requestToken } from "./methods/getToken";
 import { resetUserPassword } from "./methods/resetUserPassword";
 import { sendVerificationEmail } from "./methods/sendVerificationEmail";
 import { resetCallCount } from './methods/resetCallCount';
+import { deleteUser } from './methods/deleteUser';
 
 const express = require('express');
 const sls = require('serverless-http');
-var cron = require('node-cron');
+//const cron = require('node-cron');
 
 require('dotenv').config();
 
@@ -36,11 +37,7 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
-cron.schedule('0 0 0 * * *', () => {
-  resetCallCount;
-});
-
-app.post('/resetCallCount', resetCallCount)
+app.put('/resetCallCount', resetCallCount)
 app.get('/', async (req: Request, res: Response, next: NextFunction) => {
   res.status(200).send('Server is up and running!')
 });
@@ -51,6 +48,7 @@ app.put('/api', updateDatabaseDocument);
 
 app.post('/resetPassword', resetUserPassword);
 app.post('/verifyEmail', sendVerificationEmail);
+app.delete('/deleteUser', requestToken, deleteUser);
 
 let port = process.env.PORT;
 app.listen(port, () => console.log(`App listening on port ${port}!`));
