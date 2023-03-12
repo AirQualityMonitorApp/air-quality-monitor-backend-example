@@ -13,7 +13,6 @@ exports.deleteUser = void 0;
 const airQualityModel = require('../schema');
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.headers.userid;
-    console.log("called");
     try {
         const doc = yield airQualityModel.findOne({ uid: userId });
         yield doc.delete();

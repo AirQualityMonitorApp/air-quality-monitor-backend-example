@@ -20,7 +20,7 @@ const resetCallCount_1 = require("./methods/resetCallCount");
 const deleteUser_1 = require("./methods/deleteUser");
 const express = require('express');
 const sls = require('serverless-http');
-const cron = require('node-cron');
+//const cron = require('node-cron');
 require('dotenv').config();
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');

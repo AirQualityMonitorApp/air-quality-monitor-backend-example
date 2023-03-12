@@ -9,7 +9,6 @@ export const updateDatabaseDocument = async (req: Request, res: Response) => {
     if (userId == undefined) {
         res.status(403).json({message: "You are not authorized to perform this action"})
     }
-    console.log(userId)
     const data = req.body
 
     const realTimeData = {
@@ -28,7 +27,11 @@ export const updateDatabaseDocument = async (req: Request, res: Response) => {
             res.status(429).json({message: "Daily calls limit exceeded"})
         }
         await doc.updateOne(realTimeData)
-        await doc.updateOne({ $inc: { callCount: 50 } });
+        await doc.updateOne({ $inc: { callCount: 1 } });
+
+        /* The following code has to be added when data history will be implemented
+        on the client
+
         await doc.updateOne({$push: {history: {
             AQScore: data.AQScore,
             co2: data.co2,
@@ -38,8 +41,8 @@ export const updateDatabaseDocument = async (req: Request, res: Response) => {
             tvoc: data.tvoc,
             timestamp: new Date()
             }
-        }})
-        console.log(doc)
+        })*/
+
         res.status(200).send(doc);
     } catch (error) {
         res.json({message: error})
