@@ -27,10 +27,10 @@ const resetUserPassword = (req, res) => __awaiter(void 0, void 0, void 0, functi
         mailOptions.html = (0, emailTemplate_1.emailTemplate)(verificationLink);
         const sentEmail = yield nodemailer_1.transporter.sendMail(mailOptions, function (error) {
             if (error) {
-                console.log(error);
+                res.json({ message: error });
             }
         });
-        res.status(200).json({ message: "OK" });
+        res.status(200).json({ message: "Password reset successfully" });
     }
     catch (error) {
         res.json({ message: error });

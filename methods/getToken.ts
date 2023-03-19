@@ -2,8 +2,8 @@ import { Response, Request, NextFunction } from "express";
 import * as admin from "firebase-admin";
 
 export const requestToken = async(req: Request, res: Response, next: NextFunction) => {
-    
-  const authHeader = req.headers.authorization;   
+
+  const authHeader = req.headers.authorization;
   if (authHeader) {
     const idToken = authHeader
     admin
@@ -13,8 +13,7 @@ export const requestToken = async(req: Request, res: Response, next: NextFunctio
         return next()
       })
       .catch(function (error) {
-        console.log(error);
-        return res.sendStatus(403);
+        return res.sendStatus(403).json({error});
       });
   } else {
     res.sendStatus(401);

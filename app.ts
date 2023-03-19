@@ -10,7 +10,7 @@ import { deleteUser } from './methods/deleteUser';
 
 const express = require('express');
 const sls = require('serverless-http');
-//const cron = require('node-cron');
+const cron = require('node-cron');
 
 require('dotenv').config();
 
@@ -32,24 +32,33 @@ mongoose.connect(
 );
 
 export const db = mongoose.connection;
+
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {
   console.log("Connected successfully");
 });
 
-app.put('/resetCallCount', resetCallCount)
 app.get('/', async (req: Request, res: Response, next: NextFunction) => {
   res.status(200).send('Server is up and running!')
 });
 app.get('/api/my', requestToken, getMonitorDataFromDatabase);
-app.get('requestToken', requestToken);
-app.post('/user', createUser);
+app.get('/request-token', requestToken);
+
+app.post('/api/create-user', createUser);
+app.post('/api/reset-password', resetUserPassword);
+app.post('/api/verify-email', sendVerificationEmail);
+
 app.put('/api', updateDatabaseDocument);
 
-app.post('/resetPassword', resetUserPassword);
-app.post('/verifyEmail', sendVerificationEmail);
-app.delete('/deleteUser', requestToken, deleteUser);
+app.delete('/api/my/delete-user', requestToken, deleteUser);
 
 let port = process.env.PORT;
-app.listen(port, () => console.log(`App listening on port ${port}!`));
+app.listen(port, () => {
+  console.log(`App listening on port ${port}!`);
+  cron.schedule('0 0 * * *', resetCallCount, {
+    scheduled: true,
+    timezone: "Europe/Berlin"
+  });
+});
+
 module.exports.server = sls(app);

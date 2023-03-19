@@ -18,10 +18,6 @@ export type Request = {
     body: DataType
 };
 
-type IdDataType = {
-    userId: string
-};
-
 type UserDataType = {
     email: string,
     password: string

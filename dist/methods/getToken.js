@@ -45,8 +45,7 @@ const requestToken = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
             return next();
         })
             .catch(function (error) {
-            console.log(error);
-            return res.sendStatus(403);
+            return res.sendStatus(403).json({ error });
         });
     }
     else {

@@ -20,7 +20,7 @@ const resetCallCount_1 = require("./methods/resetCallCount");
 const deleteUser_1 = require("./methods/deleteUser");
 const express = require('express');
 const sls = require('serverless-http');
-//const cron = require('node-cron');
+const cron = require('node-cron');
 require('dotenv').config();
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
@@ -37,17 +37,22 @@ exports.db.on("error", console.error.bind(console, "connection error: "));
 exports.db.once("open", function () {
     console.log("Connected successfully");
 });
-app.put('/resetCallCount', resetCallCount_1.resetCallCount);
 app.get('/', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     res.status(200).send('Server is up and running!');
 }));
 app.get('/api/my', getToken_1.requestToken, getMonitorDataFromDatabase_1.getMonitorDataFromDatabase);
-app.get('requestToken', getToken_1.requestToken);
-app.post('/user', createUser_1.createUser);
+app.get('/request-token', getToken_1.requestToken);
+app.post('/api/create-user', createUser_1.createUser);
+app.post('/api/reset-password', resetUserPassword_1.resetUserPassword);
+app.post('/api/verify-email', sendVerificationEmail_1.sendVerificationEmail);
 app.put('/api', updateDatabaseDocument_1.updateDatabaseDocument);
-app.post('/resetPassword', resetUserPassword_1.resetUserPassword);
-app.post('/verifyEmail', sendVerificationEmail_1.sendVerificationEmail);
-app.delete('/deleteUser', getToken_1.requestToken, deleteUser_1.deleteUser);
+app.delete('/api/my/delete-user', getToken_1.requestToken, deleteUser_1.deleteUser);
 let port = process.env.PORT;
-app.listen(port, () => console.log(`App listening on port ${port}!`));
+app.listen(port, () => {
+    console.log(`App listening on port ${port}!`);
+    cron.schedule('0 0 * * *', resetCallCount_1.resetCallCount, {
+        scheduled: true,
+        timezone: "Europe/Berlin"
+    });
+});
 module.exports.server = sls(app);

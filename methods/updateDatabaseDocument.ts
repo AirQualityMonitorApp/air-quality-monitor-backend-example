@@ -23,7 +23,7 @@ export const updateDatabaseDocument = async (req: Request, res: Response) => {
 
     try {
         const doc = await airQualityModel.findOne({ uid: userId })
-        if (doc.callCount >= 100) {
+        if (doc.callCount >= 288) {
             res.status(429).json({message: "Daily calls limit exceeded"})
         }
         await doc.updateOne(realTimeData)

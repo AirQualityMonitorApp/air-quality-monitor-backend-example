@@ -28,7 +28,7 @@ const updateDatabaseDocument = (req, res) => __awaiter(void 0, void 0, void 0, f
     };
     try {
         const doc = yield airQualityModel.findOne({ uid: userId });
-        if (doc.callCount >= 100) {
+        if (doc.callCount >= 288) {
             res.status(429).json({ message: "Daily calls limit exceeded" });
         }
         yield doc.updateOne(realTimeData);

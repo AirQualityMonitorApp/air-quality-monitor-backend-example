@@ -38,7 +38,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         mailOptions.html = (0, emailTemplate_1.emailTemplate)(verificationLink);
         const sentEmail = yield nodemailer_1.transporter.sendMail(mailOptions, function (error) {
             if (error) {
-                console.log(error);
+                res.json({ message: error });
             }
         });
         data.save();
