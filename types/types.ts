@@ -4,11 +4,14 @@ export type DataType = {
 };
 
 export type RealTimeData = {
-    AQScore: number,
+    aqScore: number,
     co2: number,
     humidity: number,
-    pm: number,
-    temperature: number,
+    pm25: number,
+    pm10: number,
+    tempCelsius: number,
+    tempFahrenheit: number,
+    vocIndex: number
     tvoc: number,
     timestamp: Date,
     callCount: number
@@ -16,13 +19,4 @@ export type RealTimeData = {
 
 export type Request = {
     body: DataType
-};
-
-type UserDataType = {
-    email: string,
-    password: string
-};
-
-export type UserRequest = {
-    body: UserDataType
 };

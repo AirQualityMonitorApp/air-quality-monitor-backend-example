@@ -4,11 +4,15 @@ const AirQualitySchema = new mongoose.Schema({
     uid: {
         type: String
     },
-    AQScore: {
+    aqScore: {
         type: Number,
         default: 0
     },
-    temperature: {
+    tempCelsius: {
+        type: Number,
+        default: 0
+    },
+    tempFahrenheit: {
         type: Number,
         default: 0
     },
@@ -20,19 +24,23 @@ const AirQualitySchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    vocIndex: {
+        type: Number,
+        default: 0
+    },
     humidity: {
         type: Number,
         default: 0
     },
-    pm: {
+    pm25: {
+        type: Number,
+        default: 0
+    },
+    pm10: {
         type: Number,
         default: 0
     },
     timestamp: Date,
-    callCount: {
-        type: Number,
-        default: 1
-    },
     history: []
 });
 

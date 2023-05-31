@@ -13,39 +13,22 @@ exports.updateDatabaseDocument = void 0;
 const airQualityModel = require('../schema');
 const updateDatabaseDocument = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.headers.userid;
-    if (userId == undefined) {
-        res.status(403).json({ message: "You are not authorized to perform this action" });
-    }
     const data = req.body;
     const realTimeData = {
-        AQScore: data.AQScore,
+        aqScore: data.aqScore,
         co2: data.co2,
         humidity: data.humidity,
-        pm: data.pm,
-        temperature: data.temperature,
+        pm25: data.pm25,
+        pm10: data.pm10,
+        tempCelsius: data.tempCelsius,
+        tempFahrenheit: data.tempFahrenheit,
+        vocIndex: data.vocIndex,
         tvoc: data.tvoc,
         timestamp: new Date()
     };
     try {
         const doc = yield airQualityModel.findOne({ uid: userId });
-        if (doc.callCount >= 288) {
-            res.status(429).json({ message: "Daily calls limit exceeded" });
-        }
         yield doc.updateOne(realTimeData);
-        yield doc.updateOne({ $inc: { callCount: 1 } });
-        /* The following code has to be added when data history will be implemented
-        on the client
-
-        await doc.updateOne({$push: {history: {
-            AQScore: data.AQScore,
-            co2: data.co2,
-            humidity: data.humidity,
-            pm: data.pm,
-            temperature: data.temperature,
-            tvoc: data.tvoc,
-            timestamp: new Date()
-            }
-        })*/
         res.status(200).send(doc);
     }
     catch (error) {
