@@ -17,6 +17,7 @@ export type RealTimeData = {
     callCount: number
 };
 
+
 export type Request = {
     body: DataType
 };
