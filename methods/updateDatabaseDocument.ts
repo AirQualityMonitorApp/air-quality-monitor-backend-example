@@ -3,9 +3,7 @@ import { Response, Request } from "express";
 const airQualityModel = require('../schema');
 
 export const updateDatabaseDocument = async (req: Request, res: Response) => {
-
     const userId = req.headers.userid
-
     const data = req.body
 
     const realTimeData = {
@@ -22,8 +20,9 @@ export const updateDatabaseDocument = async (req: Request, res: Response) => {
     }
     try {
         const doc = await airQualityModel.findOne({ uid: userId })
-        await doc.updateOne(realTimeData)
-
+        doc.airQuality = realTimeData
+        doc.history.push(realTimeData)
+        await doc.save();
         res.status(200).send(doc);
     } catch (error) {
         res.json({message: error})

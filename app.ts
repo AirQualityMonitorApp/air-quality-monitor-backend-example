@@ -1,4 +1,5 @@
 import { Response, Request, NextFunction } from "express";
+import { createNewDocument } from "./methods/createNewDocument";
 import { getMonitorDataFromDatabase } from "./methods/getMonitorDataFromDatabase";
 import { updateDatabaseDocument } from "./methods/updateDatabaseDocument";
 
@@ -30,6 +31,7 @@ app.get('/', async (req: Request, res: Response, next: NextFunction) => {
   res.status(200).send('Server is up and running!')
 });
 app.get('/api', getMonitorDataFromDatabase);
+app.post('/api', createNewDocument);
 app.put('/api', updateDatabaseDocument);
 
 let port = process.env.PORT;

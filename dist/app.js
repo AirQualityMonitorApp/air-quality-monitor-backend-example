@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.db = void 0;
+const createNewDocument_1 = require("./methods/createNewDocument");
 const getMonitorDataFromDatabase_1 = require("./methods/getMonitorDataFromDatabase");
 const updateDatabaseDocument_1 = require("./methods/updateDatabaseDocument");
 require('dotenv').config();
@@ -31,6 +32,7 @@ app.get('/', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
     res.status(200).send('Server is up and running!');
 }));
 app.get('/api', getMonitorDataFromDatabase_1.getMonitorDataFromDatabase);
+app.post('/api', createNewDocument_1.createNewDocument);
 app.put('/api', updateDatabaseDocument_1.updateDatabaseDocument);
 let port = process.env.PORT;
 app.listen(port, () => {

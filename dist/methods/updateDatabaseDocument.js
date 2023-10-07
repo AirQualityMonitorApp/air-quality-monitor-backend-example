@@ -28,7 +28,23 @@ const updateDatabaseDocument = (req, res) => __awaiter(void 0, void 0, void 0, f
     };
     try {
         const doc = yield airQualityModel.findOne({ uid: userId });
-        yield doc.updateOne(realTimeData);
+        doc.airQuality = realTimeData;
+        doc.history.push(realTimeData);
+        yield doc.save();
+        // await doc.updateOne({$push: {history: {
+        //         aqScore: data.aqScore,
+        //         co2: data.co2,
+        //         humidity: data.humidity,
+        //         pm25: data.pm25,
+        //         pm10: data.pm10,
+        //         tempCelsius: data.tempCelsius,
+        //         tempFahrenheit: data.tempFahrenheit,
+        //         vocIndex: data.vocIndex,
+        //         tvoc: data.tvoc,
+        //         timestamp: new Date()
+        //         }
+        //     }
+        // });
         res.status(200).send(doc);
     }
     catch (error) {

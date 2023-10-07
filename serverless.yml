@@ -4,7 +4,7 @@ service: aqm-server-lambda
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   stage: dev
   region: eu-central-1
 
